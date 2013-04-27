@@ -8,11 +8,13 @@ public class Junction {
 	public Junction(int x, int y) {
 		this.x = x;
 		this.y = y;
-		mapSegments = new MapSegment[4];
+		mapSegments = new MapSegment[8];
 	}
 	
-	public void AddSegment(MapSegment segment) {
-		mapSegments[numOfSegments] = segment;
+	public void AddBranch(MapSegment segment1, MapSegment segment2) {
+		mapSegments[numOfSegments] = segment1;
+		numOfSegments++;
+		mapSegments[numOfSegments] = segment2;
 		numOfSegments++;
 	}
 }
