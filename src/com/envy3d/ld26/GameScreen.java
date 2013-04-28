@@ -15,6 +15,8 @@ public class GameScreen implements Screen {
 	public static final int GAME_STATE = 1;
 	public static final int END_STATE = 2;
 	public int gameState;
+	public final int mapSizeX = 100;
+	public final int mapSizeY = 80;
 	
 	public SpriteHolder spriteHolder;
 	public Map map;

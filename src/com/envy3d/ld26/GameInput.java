@@ -9,19 +9,31 @@ public class GameInput implements InputProcessor {
 	
 	public GameScreen game;
 	public int mouseX, mouseY;
+	public int prevScreenX, prevScreenY;
 	public int gridX, gridY;
 	public boolean validLocation;
 	private Sprite highlightSprite;
+	private boolean lmb;
+	private boolean rmb;
+	private float leftScreenBound;
+	private float rightScreenBound;
+	private float topScreenBound;
+	private float bottomScreenBound;
 	
 	public GameInput(GameScreen game, String highlightSpriteName) {
 		this.game = game;
 		highlightSprite = game.spriteHolder.grabSprite(highlightSpriteName);
 		validLocation = false;
+		lmb = false;
+		rmb = false;
+		leftScreenBound = game.camera.position.x;
+		rightScreenBound = game.camera.position.x;
+		topScreenBound = game.camera.position.y;
+		bottomScreenBound = game.camera.position.y;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
 		
 		return false;
 	}
@@ -34,7 +46,7 @@ public class GameInput implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		if (character == ' ') {
+		if (character == 'q') {
 			game.gameState = GameScreen.END_STATE;
 			return true;
 		}
@@ -43,20 +55,50 @@ public class GameInput implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (Input.Buttons.LEFT == button && validLocation == true) {
-			
+		if (button == Input.Buttons.LEFT) {
+			lmb = true;
+			if (validLocation) {
+				actOnSquare();
+			}
 		}
+		else if (button == Input.Buttons.RIGHT){
+			rmb = true;
+		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (button == Input.Buttons.LEFT) {
+			lmb = false;
+		}
+		else if (button == Input.Buttons.RIGHT){
+			rmb = false;
+			prevScreenX = screenX;
+			prevScreenY = screenY;
+		}
 		
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		mouseX = screenX + (int)(game.camera.position.x - (game.camera.viewportWidth / 2));
+		mouseY = Math.abs(Gdx.graphics.getHeight() - screenY) + (int)(game.camera.position.y - (game.camera.viewportHeight / 2));
+		gridX = mouseX / 16;
+		gridY = mouseY / 16;
+		validLocation = checkLocValidity();
+		
+		if (lmb && validLocation) {
+			actOnSquare();
+		}
+		else if (rmb) {
+			game.camera.position.x += prevScreenX - screenX;
+			game.camera.position.y += screenY - prevScreenY;
+			prevScreenX = screenX;
+			prevScreenY = screenY;
+		}
 		
 		return false;
 	}
@@ -69,6 +111,8 @@ public class GameInput implements InputProcessor {
 		gridY = mouseY / 16;
 		
 		validLocation = checkLocValidity();
+		prevScreenX = screenX;
+		prevScreenY = screenY;
 		
 		return false;
 	}
@@ -77,6 +121,10 @@ public class GameInput implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void actOnSquare() {
+		
 	}
 	
 	public Junction insertNeighborlessJunction() {
@@ -200,6 +248,48 @@ public class GameInput implements InputProcessor {
 			}
 		}
 		segment.mapPoints.items[0] = newPoint;
+	}
+	
+	public void updateCameraBounds(int x, int y) {
+		if (x < leftScreenBound) {
+			leftScreenBound = x;
+			if (leftScreenBound < Gdx.graphics.getWidth() / 2) {
+				leftScreenBound = Gdx.graphics.getWidth() / 2;
+			}
+		}
+		else if (x > rightScreenBound) {
+			rightScreenBound = x;
+			if (rightScreenBound < (game.mapSizeX * 16) - (Gdx.graphics.getWidth() / 2)) {
+				rightScreenBound = (game.mapSizeX * 16) - (Gdx.graphics.getWidth() / 2);
+			}
+		}
+		if (y < bottomScreenBound) {
+			bottomScreenBound = y;
+			if (bottomScreenBound < Gdx.graphics.getHeight() / 2) {
+				bottomScreenBound = Gdx.graphics.getHeight() / 2;
+			}
+		}
+		else if (y > topScreenBound) {
+			topScreenBound = y;
+			if (topScreenBound < (game.mapSizeY * 16) - (Gdx.graphics.getHeight() / 2)) {
+				topScreenBound = (game.mapSizeY * 16) - (Gdx.graphics.getHeight() / 2);
+			}
+		}
+	}
+	
+	public void correctCamera() {
+		if (game.camera.position.x < leftScreenBound) {
+			game.camera.position.x = leftScreenBound;
+		}
+		if (game.camera.position.x > rightScreenBound) {
+			game.camera.position.x = rightScreenBound;
+		}
+		if (game.camera.position.y < bottomScreenBound) {
+			game.camera.position.y = bottomScreenBound;
+		}
+		if (game.camera.position.y > topScreenBound) {
+			game.camera.position.y = topScreenBound;
+		}
 	}
 	
 	public void render() {
