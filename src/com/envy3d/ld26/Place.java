@@ -17,9 +17,9 @@ public abstract class Place {
 	
 	public Place(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen gameScreen, boolean isEnterable, boolean isExitable, int type) {
 		left = x;
-		top = y;
+		top = y + height;
 		right = x + width;
-		bottom = y + height;
+		bottom = y;
 		topFilled = false;
 		leftFilled = false;
 		bottomFilled = false;
@@ -140,7 +140,7 @@ public abstract class Place {
 			for (int i = 0; i < filledSides.length; i++) {
 				if (filledSides[i] == 1) {
 					rand = MathUtils.random(left, right);
-					accesses[currentJunctionIdx] = game.map.addJunction(rand, top - 1);
+					accesses[currentJunctionIdx] = game.map.addJunction(rand, top + 1);
 				}
 				else if (filledSides[i] == 2) {
 					rand = MathUtils.random(top, bottom);
@@ -148,7 +148,7 @@ public abstract class Place {
 				}
 				else if (filledSides[i] == 3) {
 					rand = MathUtils.random(left, right);
-					accesses[currentJunctionIdx] = game.map.addJunction(rand, bottom + 1);
+					accesses[currentJunctionIdx] = game.map.addJunction(rand, bottom - 1);
 				}
 				else if (filledSides[i] == 4) {
 					rand = MathUtils.random(top, bottom);

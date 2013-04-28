@@ -3,7 +3,6 @@ package com.envy3d.ld26;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
 
 public class SpriteHolder {
 	private TextureAtlas atlas;
@@ -14,5 +13,9 @@ public class SpriteHolder {
 	
 	public Sprite grabSprite(String name) {
 		return atlas.createSprite(name);
+	}
+	
+	public void dispose() {
+		atlas.dispose();
 	}
 }

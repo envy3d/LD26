@@ -11,10 +11,15 @@ public class GameScreen implements Screen {
 	public LD26game LD26;
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
+	public static final int MENU_STATE = 0;
+	public static final int GAME_STATE = 1;
+	public static final int END_STATE = 2;
+	public int gameState;
 	
 	public SpriteHolder spriteHolder;
 	public Map map;
 	public AntManager antManager;
+	public Input input;
 	public int food = 0;
 	
 	public float deltaTime;
@@ -27,6 +32,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		deltaTime = Gdx.graphics.getRawDeltaTime();
 		
+		antManager.update(deltaTime);
+		map.update(deltaTime);
 		
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -35,7 +42,9 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
-		
+		map.render();
+		antManager.render();
+		input.render();
 		
 		batch.end();
 	}
@@ -56,6 +65,9 @@ public class GameScreen implements Screen {
 		
 		deltaTime = 0.0f;
 		
+		input = new Input(this, "grey16");
+		antManager = new AntManager(this, "blue8");
+		map = new Map(this, "black16", "blue16", "yellow16", "brown16", "red16");
 	}
 
 	@Override
@@ -78,8 +90,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		spriteHolder.dispose();
+		batch.dispose();
 	}
 
 }

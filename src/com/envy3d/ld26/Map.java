@@ -16,7 +16,7 @@ public class Map {
 	private Sprite potatoSprite;
 	private Sprite enemySprite;
 	
-	public Map(String pathSpriteName, String moundSpriteName, String foodSpriteName, String potatoSpriteName, String enemySpriteName, GameScreen game) {
+	public Map(GameScreen game, String pathSpriteName, String moundSpriteName, String foodSpriteName, String potatoSpriteName, String enemySpriteName) {
 		this.game = game;
 		mapSegments = new Array<MapSegment>(true, 16, MapSegment.class);
 		junctions = new Array<Junction>(true, 16, Junction.class);
@@ -35,6 +35,12 @@ public class Map {
 		return junction;
 	}
 	
+	public void update(float deltaTime) {
+		for (int i = 0; i < places.size; i++) {
+			places.items[i].update(deltaTime);
+		}
+	}
+	
 	public void render() {
 		/*for (int i = 0; i < mapSegments.size; i++) {
 			for (int j = 0; j < mapSegments.items[i].mapPoints.size ; j++) {
@@ -43,17 +49,48 @@ public class Map {
 			}
 		}*/
 		for (int i = 0; i < junctions.size; i++) {
-			pathSprite.setPosition(junctions.items[i].x, junctions.items[i].y);
+			pathSprite.setPosition(junctions.items[i].x * 16, junctions.items[i].y * 16);
 			pathSprite.draw(game.batch);
 			for (int j = 0; j < junctions.items[i].numOfSegments; j++) {
 				for (int k = 0; k < junctions.items[i].mapSegOut[j].mapPoints.size ; k++) {
-					pathSprite.setPosition(junctions.items[i].mapSegOut[j].mapPoints.items[k].x, junctions.items[i].mapSegOut[j].mapPoints.items[k].y);
+					pathSprite.setPosition(junctions.items[i].mapSegOut[j].mapPoints.items[k].x * 16, junctions.items[i].mapSegOut[j].mapPoints.items[k].y * 16);
 					pathSprite.draw(game.batch);
 				}
 			}
 		}
 		for (int i = 0; i < places.size; i++) {
-			
+			if (places.items[i].type == 1) {
+				for (int j = places.items[i].bottom; j <= places.items[i].top; j++) {
+					for (int k = places.items[i].left; k <= places.items[i].right; k++) {
+						moundSprite.setPosition(k * 16, j * 16);
+						moundSprite.draw(game.batch);
+					}
+				}
+			}
+			if (places.items[i].type == 2) {
+				for (int j = places.items[i].bottom; j <= places.items[i].top; j++) {
+					for (int k = places.items[i].left; k <= places.items[i].right; k++) {
+						foodSprite.setPosition(k * 16, j * 16);
+						foodSprite.draw(game.batch);
+					}
+				}
+			}
+			if (places.items[i].type == 3) {
+				for (int j = places.items[i].bottom; j <= places.items[i].top; j++) {
+					for (int k = places.items[i].left; k <= places.items[i].right; k++) {
+						potatoSprite.setPosition(k * 16, j * 16);
+						potatoSprite.draw(game.batch);
+					}
+				}
+			}
+			if (places.items[i].type == 4) {
+				for (int j = places.items[i].bottom; j <= places.items[i].top; j++) {
+					for (int k = places.items[i].left; k <= places.items[i].right; k++) {
+						enemySprite.setPosition(k * 16, j * 16);
+						enemySprite.draw(game.batch);
+					}
+				}
+			}
 		}
 	}
 }

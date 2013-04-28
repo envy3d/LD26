@@ -1,13 +1,21 @@
 package com.envy3d.ld26;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 
 public class AntManager {
+	
+	public GameScreen game;
 	private Array<Ant> ants;
 	public int gapFillerIndex;
+	public Sprite antSprite;
+	public Sprite enemySprite;
 	
-	public AntManager() {
+	public AntManager(GameScreen game, String antSpriteName) {
+		this.game = game;
+		
 		ants = new Array<Ant>(true, 128, Ant.class);
+		antSprite = game.spriteHolder.grabSprite(antSpriteName);
 	}
 	
 	public void update(float deltaTime) {
@@ -51,5 +59,14 @@ public class AntManager {
 	public void removeAnt(Ant ant) {
 		gapFillerIndex = ants.indexOf(ant, true);
 		ants.items[gapFillerIndex] = null;
+	}
+	
+	public void render() {
+		for (int i = 0; i < ants.size; i++) {
+			if (ants.items[i] != null) {
+				antSprite.setPosition(ants.items[i].pxlX, ants.items[i].pxlY);
+				antSprite.draw(game.batch);
+			}
+		}
 	}
 }
