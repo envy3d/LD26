@@ -1,5 +1,6 @@
 package com.envy3d.ld26;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -14,7 +15,7 @@ public class Input implements InputProcessor {
 	public Input(GameScreen game, String highlightSpriteName) {
 		this.game = game;
 		highlightSprite = game.spriteHolder.grabSprite(highlightSpriteName);
-		validLocation = false;
+		validLocation = true;
 	}
 
 	@Override
@@ -59,8 +60,8 @@ public class Input implements InputProcessor {
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		mouseX = screenX;
-		mouseY = screenY;
+		mouseX = screenX + (int)(game.camera.position.x - (game.camera.viewportWidth / 2));
+		mouseY = Math.abs(Gdx.graphics.getHeight() - screenY) + (int)(game.camera.position.y - (game.camera.viewportHeight / 2));
 		gridX = mouseX / 16;
 		gridY = mouseY / 16;
 		

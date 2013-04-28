@@ -16,10 +16,10 @@ public class LD26game extends Game {
 	//private SpriteBatch batch;
 	//private Texture texture;
 	//private Sprite sprite;
-	public float deltaTime = 0;
+	//public float deltaTime = 0;
 	
 	@Override
-	public void create() {		
+	public void create() {
 		//float w = Gdx.graphics.getWidth();
 		//float h = Gdx.graphics.getHeight();
 		
@@ -41,13 +41,15 @@ public class LD26game extends Game {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		//batch.dispose();
 		//texture.dispose();
 	}
 
 	@Override
 	public void render() {		
-		deltaTime = Gdx.graphics.getRawDeltaTime();
+		super.render();
+		//deltaTime = Gdx.graphics.getRawDeltaTime();
 		
 		//Gdx.gl.glClearColor(1, 1, 1, 1);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -60,13 +62,16 @@ public class LD26game extends Game {
 
 	@Override
 	public void resize(int width, int height) {
+		super.resize(width, height);
 	}
 
 	@Override
 	public void pause() {
+		super.pause();
 	}
 
 	@Override
 	public void resume() {
+		super.resume();
 	}
 }

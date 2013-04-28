@@ -31,20 +31,24 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		deltaTime = Gdx.graphics.getRawDeltaTime();
-		
-		antManager.update(deltaTime);
-		map.update(deltaTime);
-		
+		if (gameState == 1) {
+			antManager.update(deltaTime);
+			map.update(deltaTime);
+		}
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
-		map.render();
-		antManager.render();
-		input.render();
+		//if (gameState == 1 || gameState == 2)
+			map.render();
+		//if (gameState == 1) {
+			antManager.render();
+			input.render();
+		//}
 		
 		batch.end();
 	}
@@ -59,13 +63,17 @@ public class GameScreen implements Screen {
 	public void show() {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-		camera = new OrthographicCamera(1, h/w);
+		gameState = 1;
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		camera.update();
 		batch = new SpriteBatch();
 		spriteHolder = new SpriteHolder();
 		
 		deltaTime = 0.0f;
 		
 		input = new Input(this, "grey16");
+		Gdx.input.setInputProcessor(input);
 		antManager = new AntManager(this, "blue8");
 		map = new Map(this, "black16", "blue16", "yellow16", "brown16", "red16");
 	}
