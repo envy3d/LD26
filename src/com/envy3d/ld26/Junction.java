@@ -24,13 +24,13 @@ public class Junction {
 	
 	public void addBranch(MapSegment segment1, MapSegment segment2) {
 		if (segment1.junctionFrom == this) {
-			mapSegInc[numOfSegments] = segment1;
-			mapSegOut[numOfSegments] = segment2;
+			mapSegInc[numOfSegments] = segment2;
+			mapSegOut[numOfSegments] = segment1;
 			numOfSegments++;
 		}
 		else {
-			mapSegInc[numOfSegments] = segment2;
-			mapSegOut[numOfSegments] = segment1;
+			mapSegInc[numOfSegments] = segment1;
+			mapSegOut[numOfSegments] = segment2;
 			numOfSegments++;
 		}
 	}

@@ -10,7 +10,7 @@ public class Map {
 	public Array<Junction> junctions;
 	public Array<PlaceJunction> placeJunctions;
 	public Array<Place> places;
-	public int[][] 
+	//public int[][] 
 	
 	private Sprite pathSprite;
 	private Sprite moundSprite;
@@ -20,8 +20,8 @@ public class Map {
 	
 	public Map(GameScreen game, String pathSpriteName, String moundSpriteName, String foodSpriteName, String potatoSpriteName, String enemySpriteName) {
 		this.game = game;
-		mapSegments = new Array<MapSegment>(true, 16, MapSegment.class);
-		junctions = new Array<Junction>(true, 16, Junction.class);
+		mapSegments = new Array<MapSegment>(false, 16, MapSegment.class);
+		junctions = new Array<Junction>(false, 16, Junction.class);
 		placeJunctions = new Array<PlaceJunction>(true, 16, PlaceJunction.class);
 		places = new Array<Place>(true, 16, Place.class);
 		
@@ -42,6 +42,10 @@ public class Map {
 		PlaceJunction junction = new PlaceJunction(x, y, place);
 		placeJunctions.add(junction);
 		return junction;
+	}
+	
+	public void removeJunction(Junction junction) {
+		junctions.removeValue(junction, true);
 	}
 	
 	public void update(float deltaTime) {
