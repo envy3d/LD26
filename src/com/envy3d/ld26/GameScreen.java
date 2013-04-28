@@ -34,8 +34,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		deltaTime = Gdx.graphics.getRawDeltaTime();
 		if (gameState == 1) {
-			//antManager.update(deltaTime);
-			//map.update(deltaTime);
+			antManager.update(deltaTime);
+			map.update(deltaTime);
 		}
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -45,12 +45,12 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
-		//if (gameState == 1 || gameState == 2)
+		if (gameState == 1 || gameState == 2)
 			map.render();
-		//if (gameState == 1) {
+		if (gameState == 1) {
 			antManager.render();
 			input.render();
-		//}
+		}
 		
 		batch.end();
 	}

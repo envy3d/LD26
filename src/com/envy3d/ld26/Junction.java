@@ -1,6 +1,6 @@
 package com.envy3d.ld26;
 
-public class Junction {
+public class Junction implements ILoc {
 	public int x, y;
 	public MapSegment[] mapSegOut;
 	public MapSegment[] mapSegInc;
@@ -33,5 +33,10 @@ public class Junction {
 			mapSegOut[numOfSegments] = segment2;
 			numOfSegments++;
 		}
+	}
+
+	@Override
+	public int type() {
+		return 1;
 	}
 }

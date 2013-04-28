@@ -124,6 +124,110 @@ public class GameInput implements InputProcessor {
 	}
 	
 	public void actOnSquare() {
+		Junction northJ;
+		Junction eastJ;
+		Junction southJ;
+		Junction westJ;
+		MapSegment northS;
+		MapSegment eastS;
+		MapSegment southS;
+		MapSegment westS;
+		PlaceJunction northP;
+		PlaceJunction eastP;
+		PlaceJunction southP;
+		PlaceJunction westP;
+		int numOfJ = 0;
+		int numOfS = 0;
+		int numOfP = 0;
+		
+		for (int i = 0; i < game.map.placeJunctions.size; i++) {
+			if (gridX == game.map.placeJunctions.items[i].x && gridY + 1 == game.map.placeJunctions.items[i].y) {
+				northP = game.map.placeJunctions.items[i];
+				numOfP++;
+			}
+			if (gridX + 1 == game.map.placeJunctions.items[i].x && gridY == game.map.placeJunctions.items[i].y) {
+				eastP = game.map.placeJunctions.items[i];
+				numOfP++;
+			}
+			if (gridX == game.map.placeJunctions.items[i].x && gridY - 1 == game.map.placeJunctions.items[i].y) {
+				southP = game.map.placeJunctions.items[i];
+				numOfP++;
+			}
+			if (gridX - 1 == game.map.placeJunctions.items[i].x && gridY == game.map.placeJunctions.items[i].y) {
+				westP = game.map.placeJunctions.items[i];
+				numOfP++;
+			}
+		}
+		for (int i = 0; i < game.map.junctions.size; i++) {
+			if (gridX == game.map.junctions.items[i].x && gridY + 1 == game.map.junctions.items[i].y) {
+				northJ = game.map.junctions.items[i];
+				numOfJ++;
+			}
+			if (gridX + 1 == game.map.junctions.items[i].x && gridY == game.map.junctions.items[i].y) {
+				eastJ = game.map.junctions.items[i];
+				numOfJ++;
+			}
+			if (gridX == game.map.junctions.items[i].x && gridY - 1 == game.map.junctions.items[i].y) {
+				southJ = game.map.junctions.items[i];
+				numOfJ++;
+			}
+			if (gridX - 1 == game.map.junctions.items[i].x && gridY == game.map.junctions.items[i].y) {
+				westJ = game.map.junctions.items[i];
+				numOfJ++;
+			}		
+			if (gridY + 1 == game.map.junctions.items[i].y) {
+				for (int j = 0; j < game.map.junctions.items[i].numOfSegments; j++) {
+					if (gridY + 1 == game.map.junctions.items[i].mapSegOut[j].junctionToward.y) {
+						if ((gridX > game.map.junctions.items[i].x  && gridX < game.map.junctions.items[i].mapSegOut[j].junctionToward.x) ||
+							(gridX < game.map.junctions.items[i].x  && gridX > game.map.junctions.items[i].mapSegOut[j].junctionToward.x)) {
+							
+							northS = game.map.junctions.items[i].mapSegOut[j];
+							numOfS++;
+						}
+					}
+				}
+			}
+			if (gridX + 1 == game.map.junctions.items[i].x) {
+				for (int j = 0; j < game.map.junctions.items[i].numOfSegments; j++) {
+					if (gridX + 1 == game.map.junctions.items[i].mapSegOut[j].junctionToward.x) {
+						if ((gridY > game.map.junctions.items[i].y  && gridY < game.map.junctions.items[i].mapSegOut[j].junctionToward.y) ||
+							(gridY < game.map.junctions.items[i].y  && gridY > game.map.junctions.items[i].mapSegOut[j].junctionToward.y)) {
+							
+							eastS = game.map.junctions.items[i].mapSegOut[j];
+							numOfS++;
+						}
+					}
+				}
+			}
+			if (gridY - 1 == game.map.junctions.items[i].y) {
+				for (int j = 0; j < game.map.junctions.items[i].numOfSegments; j++) {
+					if (gridY - 1 == game.map.junctions.items[i].mapSegOut[j].junctionToward.y) {
+						if ((gridX > game.map.junctions.items[i].x  && gridX < game.map.junctions.items[i].mapSegOut[j].junctionToward.x) ||
+							(gridX < game.map.junctions.items[i].x  && gridX > game.map.junctions.items[i].mapSegOut[j].junctionToward.x)) {
+							
+							southS = game.map.junctions.items[i].mapSegOut[j];
+							numOfS++;
+						}
+					}
+				}
+			}
+			if (gridX - 1 == game.map.junctions.items[i].x) {
+				for (int j = 0; j < game.map.junctions.items[i].numOfSegments; j++) {
+					if (gridX - 1 == game.map.junctions.items[i].mapSegOut[j].junctionToward.x) {
+						if ((gridY > game.map.junctions.items[i].y  && gridY < game.map.junctions.items[i].mapSegOut[j].junctionToward.y) ||
+							(gridY < game.map.junctions.items[i].y  && gridY > game.map.junctions.items[i].mapSegOut[j].junctionToward.y)) {
+							
+							westS = game.map.junctions.items[i].mapSegOut[j];
+							numOfS++;
+						}
+					}
+				}
+			}
+		}
+		
+		if (numOfJ == 0 && numOfP == 0 && numOfS == 0) {
+			insertNeighborlessJunction();
+		}
 		
 	}
 	

@@ -13,4 +13,9 @@ public class PlaceJunction extends Junction {
 	public void onConnect() {
 		place.onConnect();
 	}
+	
+	@Override
+	public int type() {
+		return 3;
+	}
 }
