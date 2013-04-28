@@ -18,6 +18,10 @@ public class Junction {
 		ant2 = null;
 	}
 	
+	public void onConnect() {
+		
+	}
+	
 	public void addBranch(MapSegment segment1, MapSegment segment2) {
 		if (segment1.junctionFrom == this) {
 			mapSegInc[numOfSegments] = segment1;

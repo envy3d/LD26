@@ -18,4 +18,6 @@ public class Map {
 		junctions.add(junction);
 		return junction;
 	}
+	
+	
 }
