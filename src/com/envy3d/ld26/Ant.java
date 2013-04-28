@@ -5,7 +5,7 @@ public class Ant {
 	public Junction destination;
 	public int x, y;
 	public int gridX, gridY;
-	public int hunger;
+	public int energy;
 	public int carriedFood;
 	
 	

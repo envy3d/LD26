@@ -15,6 +15,7 @@ public class LD26game implements ApplicationListener {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	public float deltaTime = 0;
 	
 	@Override
 	public void create() {		
@@ -43,6 +44,8 @@ public class LD26game implements ApplicationListener {
 
 	@Override
 	public void render() {		
+		deltaTime = Gdx.graphics.getRawDeltaTime();
+		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		

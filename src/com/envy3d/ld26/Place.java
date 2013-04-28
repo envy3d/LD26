@@ -5,10 +5,12 @@ import com.badlogic.gdx.math.MathUtils;
 public abstract class Place {
 	public Map map;
 	public int top, left, bottom, right;
-	private boolean topFilled, leftFilled, bottomFilled, rightFilled;
-	private Ant[] antsInside;
-	private int antsInsideTailIndex;
+	protected boolean topFilled, leftFilled, bottomFilled, rightFilled;
+	protected Ant[] antsInside;
+	protected int antsInsideTailIndex;
 	public Junction[] accesses;
+	protected float[] junctionTimers;
+	protected final float junctionWaitTime = 1.5f;
 	
 	public Place(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, Map map) {
 		left = x;
@@ -23,8 +25,28 @@ public abstract class Place {
 		antsInsideTailIndex = 0;
 		accesses = new Junction[numOfJunctions];
 		initializeJunctions(numOfJunctions);
+		junctionTimers = new float[numOfJunctions];
 		
 		this.map = map;
+	}
+	
+	protected boolean sendAnt(int junctionNum) {
+		if (antsInsideTailIndex != 0) {
+			if (accesses[junctionNum].ant1 == null){
+				accesses[junctionNum].ant1 = antsInside[antsInsideTailIndex];
+				antsInsideTailIndex--;
+				return true;
+			}
+			else if (accesses[junctionNum].ant2 == null) {
+				accesses[junctionNum].ant2 = antsInside[antsInsideTailIndex];
+				antsInsideTailIndex--;
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+			return false;
 	}
 	
 	public void initializeJunctions(int numOfJunctions) {
