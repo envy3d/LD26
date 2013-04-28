@@ -68,6 +68,7 @@ public class GameInput implements InputProcessor {
 		gridX = mouseX / 16;
 		gridY = mouseY / 16;
 		
+		validLocation = checkLocValidity();
 		
 		return false;
 	}
@@ -130,12 +131,65 @@ public class GameInput implements InputProcessor {
 		baseJunction.addBranch(new MapSegment(baseJunction, newJunction, 0), new MapSegment(baseJunction, newJunction, 0));
 	}
 	
-	public void insertJunctionInSegment() {
-		
+	public void insertJunctionInSegment(MapSegment segmentA, MapSegment segmentB, int x, int y) {
+		int newJuncIdx = 0;
+		for (int i = 0; i < segmentA.mapPoints.size; i++) {
+			if (segmentA.mapPoints.items[i].x == x && segmentA.mapPoints.items[i].y == y) {
+				newJuncIdx = i;
+			}
+		}
+		Junction newJunction = game.map.addJunction(x, y);
+		MapSegment segA1 = new MapSegment(segmentA.junctionFrom, newJunction, newJuncIdx - 1);
+		MapSegment segA2 = new MapSegment(newJunction, segmentA.junctionToward, segmentA.mapPoints.size - newJuncIdx - 1);
+		MapSegment segB1 = new MapSegment(segmentB.junctionFrom, newJunction, segmentA.mapPoints.size - newJuncIdx - 1);
+		MapSegment segB2 = new MapSegment(newJunction, segmentB.junctionToward, newJuncIdx - 1);
+		int aIdx = 0;
+		int bIdx = 0;
+		for (int i = 0; i < segmentA.junctionFrom.numOfSegments; i++) {
+			if (segmentA.junctionFrom.mapSegOut[i].junctionToward == segmentA.junctionToward) {
+				aIdx = i;
+			}
+		}
+		for (int i = 0; i < segmentB.junctionFrom.numOfSegments; i++) {
+			if (segmentB.junctionFrom.mapSegOut[i].junctionToward == segmentB.junctionToward) {
+				bIdx = i;
+			}
+		}
+		segmentA.junctionFrom.mapSegOut[aIdx] = segA1;
+		segmentA.junctionFrom.mapSegInc[aIdx] = segB2;
+		segmentB.junctionFrom.mapSegOut[bIdx] = segB1;
+		segmentB.junctionFrom.mapSegInc[bIdx] = segA2;
+		newJunction.addBranch(segA1, segB2);
+		newJunction.addBranch(segA2, segB1);
 	}
 	
 	public boolean checkLocValidity() {
-		
+		for (int i = 0; i < game.map.places.size; i++) {
+			if (gridX >= game.map.places.items[i].left && gridX <= game.map.places.items[i].right && gridY >= game.map.places.items[i].bottom && gridY <= game.map.places.items[i].top) {
+				return false;
+			}
+		}
+		for (int i = 0; i < game.map.placeJunctions.size; i++) {
+			if (gridX == game.map.placeJunctions.items[i].x && gridY == game.map.placeJunctions.items[i].y) {
+				return false;
+			}
+		}
+		for (int i = 0; i < game.map.junctions.size; i++) {
+			if (gridX == game.map.junctions.items[i].x && gridY == game.map.junctions.items[i].y) {
+				return false;
+			}
+			else if (gridX == game.map.junctions.items[i].x) {
+				for (int j = 0; j < game.map.junctions.items[i].numOfSegments; j++) {
+					if (gridX == game.map.junctions.items[i].mapSegOut[j].junctionToward.x) {
+						for (int k = 0; k < game.map.junctions.items[i].mapSegOut[j].mapPoints.size; k++) {
+							if (gridX == game.map.junctions.items[i].mapSegOut[j].mapPoints.items[k].x && gridY == game.map.junctions.items[i].mapSegOut[j].mapPoints.items[k].y)
+								return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void shiftSegmentArray(MapSegment segment, MapPoint newPoint) {
