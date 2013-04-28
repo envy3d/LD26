@@ -12,6 +12,7 @@ public class GameScreen implements Screen {
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	
+	public SpriteHolder spriteHolder;
 	public Map map;
 	public AntManager antManager;
 	public int food = 0;
@@ -51,6 +52,7 @@ public class GameScreen implements Screen {
 		float h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(1, h/w);
 		batch = new SpriteBatch();
+		spriteHolder = new SpriteHolder();
 		
 		deltaTime = 0.0f;
 		

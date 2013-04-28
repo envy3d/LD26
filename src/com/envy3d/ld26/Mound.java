@@ -4,8 +4,8 @@ public class Mound extends Place {
 	
 	public final float restEnergy = 30.0f;
 
-	public Mound(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, boolean isEnterable, boolean isExitable, GameScreen game) {
-		super(x, y, width, height, maxAntsInside, numOfJunctions, game, isEnterable, isExitable);
+	public Mound(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, boolean isEnterable, boolean isExitable, boolean enemy, GameScreen game) {
+		super(x, y, width, height, maxAntsInside, numOfJunctions, game, isEnterable, isExitable, (enemy) ? 4 : 1);
 
 	}
 	

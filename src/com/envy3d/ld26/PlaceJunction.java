@@ -11,6 +11,6 @@ public class PlaceJunction extends Junction {
 	
 	@Override
 	public void onConnect() {
-		place.
+		place.onConnect();
 	}
 }

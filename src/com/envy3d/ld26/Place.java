@@ -13,8 +13,9 @@ public abstract class Place {
 	protected final float junctionWaitTime = 1.5f;
 	protected boolean updateOrder = false;
 	protected boolean isEnterable, isExitable;
+	public int type; // 1 = mound, 2 = food, 3 = potato, 4 = enemy
 	
-	public Place(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen gameScreen, boolean isEnterable, boolean isExitable) {
+	public Place(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen gameScreen, boolean isEnterable, boolean isExitable, int type) {
 		left = x;
 		top = y;
 		right = x + width;
@@ -31,6 +32,7 @@ public abstract class Place {
 		
 		this.isEnterable = isEnterable;
 		this.isExitable = isExitable;
+		this.type = type;
 		
 		this.game = gameScreen;
 	}

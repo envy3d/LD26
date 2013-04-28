@@ -7,7 +7,7 @@ public class Ant {
 	public int gridX, gridY;
 	public float energy;
 	public static final float normalMaxEnergy = 30.0f;
-	public int carriedFood;
+	public float carriedFood;
 	
 	public Ant(int pxlX, int pxlY, float energy, Junction dest) {
 		this.pxlX = pxlX;

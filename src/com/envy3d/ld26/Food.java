@@ -9,7 +9,7 @@ public class Food extends Place {
 	public boolean isPotato;
 
 	public Food(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen game, boolean isPotato) {
-		super(x, y, width, height, maxAntsInside, numOfJunctions, game, false, false);
+		super(x, y, width, height, maxAntsInside, numOfJunctions, game, false, false, (isPotato) ? 3 : 2);
 		this.isPotato = isPotato;
 		totalFood = width * height * 1000;
 		
@@ -34,7 +34,7 @@ public class Food extends Place {
 	@Override
 	protected void sendMod(Ant ant) {
 		ant.energy = Ant.normalMaxEnergy;
-		ant.carriedFood = (isPotato) ? potatoValue : foodValue;
+		ant.carriedFood = (isPotato == true) ? potatoValue : foodValue;
 		
 	}
 
