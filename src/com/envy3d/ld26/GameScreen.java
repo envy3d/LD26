@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
 	public SpriteHolder spriteHolder;
 	public Map map;
 	public AntManager antManager;
-	public Input input;
+	public GameInput input;
 	public int food = 0;
 	
 	public float deltaTime;
@@ -32,8 +32,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		deltaTime = Gdx.graphics.getRawDeltaTime();
 		if (gameState == 1) {
-			antManager.update(deltaTime);
-			map.update(deltaTime);
+			//antManager.update(deltaTime);
+			//map.update(deltaTime);
 		}
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -72,10 +72,11 @@ public class GameScreen implements Screen {
 		
 		deltaTime = 0.0f;
 		
-		input = new Input(this, "grey16");
+		input = new GameInput(this, "grey16");
 		Gdx.input.setInputProcessor(input);
 		antManager = new AntManager(this, "blue8");
 		map = new Map(this, "black16", "blue16", "yellow16", "brown16", "red16");
+		MapFactory.build(map, this);
 	}
 
 	@Override

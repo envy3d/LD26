@@ -9,4 +9,10 @@ public class MapPoint {
 		this.y = y;
 		occupied = false;
 	}
+	
+	public MapPoint(int x, int y, boolean occupied) {
+		this.x = x;
+		this.y = y;
+		this.occupied = occupied;
+	}
 }

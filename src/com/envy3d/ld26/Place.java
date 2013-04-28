@@ -8,7 +8,7 @@ public abstract class Place {
 	protected boolean topFilled, leftFilled, bottomFilled, rightFilled;
 	protected Ant[] antsInside;
 	protected int antsInsideTailIndex;
-	public Junction[] accesses;
+	public PlaceJunction[] accesses;
 	protected float[] junctionTimers;
 	protected final float junctionWaitTime = 1.5f;
 	protected boolean updateOrder = false;
@@ -16,6 +16,8 @@ public abstract class Place {
 	public int type; // 1 = mound, 2 = food, 3 = potato, 4 = enemy
 	
 	public Place(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen gameScreen, boolean isEnterable, boolean isExitable, int type) {
+		
+		this.game = gameScreen;
 		left = x;
 		top = y + height;
 		right = x + width;
@@ -26,7 +28,7 @@ public abstract class Place {
 		rightFilled = false;
 		antsInside = new Ant[maxAntsInside];
 		antsInsideTailIndex = 0;
-		accesses = new Junction[numOfJunctions];
+		accesses = new PlaceJunction[numOfJunctions];
 		initializeJunctions(numOfJunctions);
 		junctionTimers = new float[numOfJunctions];
 		
@@ -34,7 +36,6 @@ public abstract class Place {
 		this.isExitable = isExitable;
 		this.type = type;
 		
-		this.game = gameScreen;
 	}
 	
 	public void update(float deltaTime) {
@@ -119,7 +120,7 @@ public abstract class Place {
 	
 	public void initializeJunctions(int numOfJunctions) {
 		int currentJunctionIdx = 0;
-		if (numOfJunctions < 4) {
+		if (numOfJunctions <= 4) {
 			int[] filledSides = new int[numOfJunctions];
 			for (int i = 0; i < numOfJunctions; i++) {
 				filledSides[i] = 0;
@@ -139,20 +140,20 @@ public abstract class Place {
 			}
 			for (int i = 0; i < filledSides.length; i++) {
 				if (filledSides[i] == 1) {
-					rand = MathUtils.random(left, right);
-					accesses[currentJunctionIdx] = game.map.addJunction(rand, top + 1);
+					rand = MathUtils.random(left + 1, right - 1);
+					accesses[currentJunctionIdx] = game.map.addPlaceJunction(rand, top + 1, this);
 				}
 				else if (filledSides[i] == 2) {
-					rand = MathUtils.random(top, bottom);
-					accesses[currentJunctionIdx] = game.map.addJunction(left - 1, rand);
+					rand = MathUtils.random(bottom + 1, top - 1);
+					accesses[currentJunctionIdx] = game.map.addPlaceJunction(left - 1, rand, this);
 				}
 				else if (filledSides[i] == 3) {
-					rand = MathUtils.random(left, right);
-					accesses[currentJunctionIdx] = game.map.addJunction(rand, bottom - 1);
+					rand = MathUtils.random(left + 1, right - 1);
+					accesses[currentJunctionIdx] = game.map.addPlaceJunction(rand, bottom - 1, this);
 				}
 				else if (filledSides[i] == 4) {
-					rand = MathUtils.random(top, bottom);
-					accesses[currentJunctionIdx] = game.map.addJunction(right + 1, rand);
+					rand = MathUtils.random(bottom + 1, top - 1);
+					accesses[currentJunctionIdx] = game.map.addPlaceJunction(right + 1, rand, this);
 				}
 				currentJunctionIdx++;
 			}

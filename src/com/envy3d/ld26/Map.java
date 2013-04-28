@@ -8,7 +8,9 @@ public class Map {
 	public GameScreen game;
 	public Array<MapSegment> mapSegments;
 	public Array<Junction> junctions;
+	public Array<PlaceJunction> placeJunctions;
 	public Array<Place> places;
+	public int[][] 
 	
 	private Sprite pathSprite;
 	private Sprite moundSprite;
@@ -20,6 +22,7 @@ public class Map {
 		this.game = game;
 		mapSegments = new Array<MapSegment>(true, 16, MapSegment.class);
 		junctions = new Array<Junction>(true, 16, Junction.class);
+		placeJunctions = new Array<PlaceJunction>(true, 16, PlaceJunction.class);
 		places = new Array<Place>(true, 16, Place.class);
 		
 		pathSprite = game.spriteHolder.grabSprite(pathSpriteName);
@@ -32,6 +35,12 @@ public class Map {
 	public Junction addJunction(int x, int y) {
 		Junction junction = new Junction(x, y);
 		junctions.add(junction);
+		return junction;
+	}
+	
+	public PlaceJunction addPlaceJunction(int x, int y, Place place) {
+		PlaceJunction junction = new PlaceJunction(x, y, place);
+		placeJunctions.add(junction);
 		return junction;
 	}
 	
@@ -48,6 +57,10 @@ public class Map {
 				pathSprite.draw(game.batch);
 			}
 		}*/
+		for (int i = 0; i < placeJunctions.size; i++) {
+			pathSprite.setPosition(placeJunctions.items[i].x * 16, placeJunctions.items[i].y * 16);
+			pathSprite.draw(game.batch);
+		}
 		for (int i = 0; i < junctions.size; i++) {
 			pathSprite.setPosition(junctions.items[i].x * 16, junctions.items[i].y * 16);
 			pathSprite.draw(game.batch);

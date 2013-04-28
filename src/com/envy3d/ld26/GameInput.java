@@ -1,10 +1,11 @@
 package com.envy3d.ld26;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Input implements InputProcessor {
+public class GameInput implements InputProcessor {
 	
 	public GameScreen game;
 	public int mouseX, mouseY;
@@ -12,10 +13,10 @@ public class Input implements InputProcessor {
 	public boolean validLocation;
 	private Sprite highlightSprite;
 	
-	public Input(GameScreen game, String highlightSpriteName) {
+	public GameInput(GameScreen game, String highlightSpriteName) {
 		this.game = game;
 		highlightSprite = game.spriteHolder.grabSprite(highlightSpriteName);
-		validLocation = true;
+		validLocation = false;
 	}
 
 	@Override
@@ -42,7 +43,9 @@ public class Input implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
+		if (Input.Buttons.LEFT == button && validLocation == true) {
+			
+		}
 		return false;
 	}
 
@@ -73,6 +76,35 @@ public class Input implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public Junction insertNeighborlessJunction() {
+		return game.map.addJunction(gridX, gridY);
+	}
+	
+	public void extendJunctionChain(Junction junction) {
+		MapPoint tempPoint = new MapPoint(junction.x, junction.y, )
+	}
+	
+	public void fuseChains() {
+		
+	}
+	
+	public void createJunctionChain() {
+		
+	}
+	
+	public void insertJunctionInSegment() {
+		
+	}
+	
+	public boolean checkLocValidity() {
+		
+	}
+	
+	public void shiftSegmentArray(MapSegment segment, MapPoint newPoint) {
+		segment.mapPoints.add(segment.mapPoints.items[segment.mapPoints.size -1]);
+		
 	}
 	
 	public void render() {
