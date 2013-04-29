@@ -10,6 +10,8 @@ public class RLoc {
 	public int type; // 0 = not connected, 1 = normal, 2 = turned, 3 = intersection
 	
 	public RLoc(int x, int y) {
+		this.x = x;
+		this.y = y;
 		neighbors = new RLoc[4];
 		numOfNeighbors = 0;
 		type = 0;

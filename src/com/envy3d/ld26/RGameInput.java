@@ -124,6 +124,11 @@ public class RGameInput implements InputProcessor {
 	}
 	
 	public void actOnSquare() {
+		RLoc northLoc = null;
+		RLoc eastLoc = null;
+		RLoc southLoc = null;
+		RLoc westLoc = null;
+		
 		
 	}
 	
