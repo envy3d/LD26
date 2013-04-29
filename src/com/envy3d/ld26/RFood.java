@@ -1,6 +1,6 @@
-/*package com.envy3d.ld26;
+package com.envy3d.ld26;
 
-public class Food extends Place {
+public class RFood extends RPlace {
 	
 	private static final float foodValue = 45.0f;
 	private static final float potatoValue = 90.0f;
@@ -8,7 +8,7 @@ public class Food extends Place {
 	public float totalFood;
 	public boolean isPotato;
 
-	public Food(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen game, boolean isPotato) {
+	public RFood(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, GameScreen game, boolean isPotato) {
 		super(x, y, width, height, maxAntsInside, numOfJunctions, game, false, false, (isPotato) ? 3 : 2);
 		this.isPotato = isPotato;
 		totalFood = width * height * 1000;
@@ -50,4 +50,3 @@ public class Food extends Place {
 		isExitable = true;
 	}
 }
-*/

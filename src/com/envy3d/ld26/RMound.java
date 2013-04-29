@@ -1,10 +1,10 @@
-/*package com.envy3d.ld26;
+package com.envy3d.ld26;
 
-public class Mound extends Place {
+public class RMound extends RPlace {
 	
 	public final float restEnergy = 30.0f;
 
-	public Mound(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, boolean isEnterable, boolean isExitable, boolean enemy, GameScreen game) {
+	public RMound(int x, int y, int width, int height, int maxAntsInside, int numOfJunctions, boolean isEnterable, boolean isExitable, boolean enemy, GameScreen game) {
 		super(x, y, width, height, maxAntsInside, numOfJunctions, game, isEnterable, isExitable, (enemy) ? 4 : 1);
 
 	}
@@ -48,4 +48,3 @@ public class Mound extends Place {
 		
 	}
 }
-*/

@@ -19,9 +19,9 @@ public class GameScreen implements Screen {
 	public final int mapSizeY = 80;
 	
 	public SpriteHolder spriteHolder;
-	public Map map;
+	public RMap map;
 	public AntManager antManager;
-	public GameInput input;
+	public RGameInput input;
 	public int food = 0;
 	
 	public float deltaTime;
@@ -74,11 +74,11 @@ public class GameScreen implements Screen {
 		
 		deltaTime = 0.0f;
 		
-		input = new GameInput(this, "grey16");
+		input = new RGameInput(this, "grey16");
 		Gdx.input.setInputProcessor(input);
 		antManager = new AntManager(this, "blue8");
-		map = new Map(this, "black16", "blue16", "yellow16", "brown16", "red16");
-		MapFactory.build(map, this);
+		map = new RMap(this, "black16", "blue16", "yellow16", "brown16", "red16");
+		RMapFactory.build(map, this);
 	}
 
 	@Override

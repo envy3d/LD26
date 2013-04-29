@@ -1,4 +1,4 @@
-package com.envy3d.ld26;
+/*package com.envy3d.ld26;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -280,25 +280,38 @@ public class GameInput implements InputProcessor {
 					}
 				}
 			}
-			//
-			//
-			//	CHANGE THIS TO WEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//
-			//
-			else if (eastS != null) {
-				for (int i = 0; i < eastS.junctionToward.numOfSegments; i++) {
-					if (eastS.junctionFrom == eastS.junctionToward.mapSegOut[i].junctionToward) {
-						insertJunctionIntoSegment(eastS, eastS.junctionToward.mapSegOut[i], gridX + 1, gridY);
+			else if (westS != null) {
+				for (int i = 0; i < westS.junctionToward.numOfSegments; i++) {
+					if (westS.junctionFrom == westS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(westS, westS.junctionToward.mapSegOut[i], gridX - 1, gridY);
 					}
 				}
 			}
 		}
 		else if (numOfJ == 0 && numOfP == 0 && numOfS == 2) {
 			if (northS != null && southS != null) {
-				//insertJunctionIntoSegment
+				for (int i = 0; i < northS.junctionToward.numOfSegments; i++) {
+					if (northS.junctionFrom == northS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(northS, northS.junctionToward.mapSegOut[i], gridX, gridY + 1);
+					}
+				}
+				for (int i = 0; i < southS.junctionToward.numOfSegments; i++) {
+					if (southS.junctionFrom == southS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(southS, southS.junctionToward.mapSegOut[i], gridX, gridY - 1);
+					}
+				}
 			}
 			else if (eastS != null && westS != null) {
-				
+				for (int i = 0; i < eastS.junctionToward.numOfSegments; i++) {
+					if (eastS.junctionFrom == eastS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(eastS, eastS.junctionToward.mapSegOut[i], gridX + 1, gridY);
+					}
+				}
+				for (int i = 0; i < westS.junctionToward.numOfSegments; i++) {
+					if (westS.junctionFrom == westS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(westS, westS.junctionToward.mapSegOut[i], gridX - 1, gridY);
+					}
+				}
 			}
 		}
 		
@@ -484,3 +497,4 @@ public class GameInput implements InputProcessor {
 		}
 	}
 }
+*/

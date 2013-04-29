@@ -1,16 +1,13 @@
-/*package com.envy3d.ld26;
+package com.envy3d.ld26;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 
-public class Map {
+public class RMap {
 	
 	public GameScreen game;
-	public Array<MapSegment> mapSegments;
-	public Array<Junction> junctions;
-	public Array<PlaceJunction> placeJunctions;
-	public Array<Place> places;
-	//public int[][] 
+	public Array<RLoc> rLocs;
+	public Array<RPlace> places;
 	
 	private Sprite pathSprite;
 	private Sprite moundSprite;
@@ -18,12 +15,10 @@ public class Map {
 	private Sprite potatoSprite;
 	private Sprite enemySprite;
 	
-	public Map(GameScreen game, String pathSpriteName, String moundSpriteName, String foodSpriteName, String potatoSpriteName, String enemySpriteName) {
+	public RMap(GameScreen game, String pathSpriteName, String moundSpriteName, String foodSpriteName, String potatoSpriteName, String enemySpriteName) {
 		this.game = game;
-		mapSegments = new Array<MapSegment>(false, 16, MapSegment.class);
-		junctions = new Array<Junction>(false, 16, Junction.class);
-		placeJunctions = new Array<PlaceJunction>(true, 16, PlaceJunction.class);
-		places = new Array<Place>(true, 16, Place.class);
+		rLocs = new Array<RLoc>(false, 16, RLoc.class);
+		places = new Array<RPlace>(true, 16, RPlace.class);
 		
 		pathSprite = game.spriteHolder.grabSprite(pathSpriteName);
 		moundSprite = game.spriteHolder.grabSprite(moundSpriteName);
@@ -32,20 +27,10 @@ public class Map {
 		enemySprite = game.spriteHolder.grabSprite(enemySpriteName);
 	}
 	
-	public Junction addJunction(int x, int y) {
-		Junction junction = new Junction(x, y);
-		junctions.add(junction);
-		return junction;
-	}
-	
-	public PlaceJunction addPlaceJunction(int x, int y, Place place) {
-		PlaceJunction junction = new PlaceJunction(x, y, place);
-		placeJunctions.add(junction);
-		return junction;
-	}
-	
-	public void removeJunction(Junction junction) {
-		junctions.removeValue(junction, true);
+	public RLoc addRLoc(int x, int y) {
+		RLoc rLoc = new RLoc(x, y);
+		rLocs.add(rLoc);
+		return rLoc;
 	}
 	
 	public void update(float deltaTime) {
@@ -55,19 +40,10 @@ public class Map {
 	}
 	
 	public void render() {
-		for (int i = 0; i < placeJunctions.size; i++) {
-			pathSprite.setPosition(placeJunctions.items[i].x * 16, placeJunctions.items[i].y * 16);
+
+		for (int i = 0; i < rLocs.size; i++) {
+			pathSprite.setPosition(rLocs.items[i].x * 16, rLocs.items[i].y * 16);
 			pathSprite.draw(game.batch);
-		}
-		for (int i = 0; i < junctions.size; i++) {
-			pathSprite.setPosition(junctions.items[i].x * 16, junctions.items[i].y * 16);
-			pathSprite.draw(game.batch);
-			for (int j = 0; j < junctions.items[i].numOfSegments; j++) {
-				for (int k = 0; k < junctions.items[i].mapSegOut[j].mapPoints.size ; k++) {
-					pathSprite.setPosition(junctions.items[i].mapSegOut[j].mapPoints.items[k].x * 16, junctions.items[i].mapSegOut[j].mapPoints.items[k].y * 16);
-					pathSprite.draw(game.batch);
-				}
-			}
 		}
 		for (int i = 0; i < places.size; i++) {
 			if (places.items[i].type == 1) {
@@ -105,4 +81,4 @@ public class Map {
 		}
 	}
 }
-*/
+

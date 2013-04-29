@@ -1,4 +1,4 @@
-package com.envy3d.ld26;
+/*package com.envy3d.ld26;
 
 public class PlaceJunction extends Junction {
 	
@@ -19,3 +19,4 @@ public class PlaceJunction extends Junction {
 		return 3;
 	}
 }
+*/
