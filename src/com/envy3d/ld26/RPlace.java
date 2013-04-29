@@ -64,7 +64,7 @@ public abstract class RPlace {
 		if (isExitable && antsInsideTailIndex != 0) {
 			if (accesses[junctionNum].ant1 == null) {
 				accesses[junctionNum].ant1 = antsInside[antsInsideTailIndex];
-				game.antManager.addAnt(antsInside[antsInsideTailIndex]);
+				game.antManager.ants.add(antsInside[antsInsideTailIndex]);
 				sendMod(antsInside[antsInsideTailIndex]);
 				antsInsideTailIndex--;
 				if (antsInsideTailIndex < 0)
@@ -74,7 +74,7 @@ public abstract class RPlace {
 			}
 			else if (accesses[junctionNum].ant2 == null) {
 				accesses[junctionNum].ant2 = antsInside[antsInsideTailIndex];
-				game.antManager.addAnt(antsInside[antsInsideTailIndex]);
+				game.antManager.ants.add(antsInside[antsInsideTailIndex]);
 				sendMod(antsInside[antsInsideTailIndex]);
 				antsInsideTailIndex--;
 				if (antsInsideTailIndex < 0)
@@ -97,7 +97,7 @@ public abstract class RPlace {
 				antsInsideTailIndex++;
 				antsInside[antsInsideTailIndex] = accesses[junctionNum].ant1;
 				receiveMod(accesses[junctionNum].ant1);
-				game.antManager.removeAnt(accesses[junctionNum].ant1);
+				game.antManager.ants.removeValue(accesses[junctionNum].ant1, true);
 				accesses[junctionNum].ant1 = null;
 				junctionTimers[junctionNum] = junctionWaitTime;
 				return true;
@@ -106,7 +106,7 @@ public abstract class RPlace {
 				antsInsideTailIndex++;
 				antsInside[antsInsideTailIndex] = accesses[junctionNum].ant2;
 				receiveMod(accesses[junctionNum].ant2);
-				game.antManager.removeAnt(accesses[junctionNum].ant2);
+				game.antManager.ants.removeValue(accesses[junctionNum].ant2, true);
 				accesses[junctionNum].ant2 = null;
 				junctionTimers[junctionNum] = junctionWaitTime;
 				return true;

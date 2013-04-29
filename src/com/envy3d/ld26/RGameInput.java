@@ -128,8 +128,73 @@ public class RGameInput implements InputProcessor {
 		RLoc eastLoc = null;
 		RLoc southLoc = null;
 		RLoc westLoc = null;
+		boolean ne = false, se = false, nw = false, sw = false;
 		
+		for (int i = 0; i < game.map.rLocs.size; i++) {
+			if (game.map.rLocs.items[i].x == gridX) {
+				if (game.map.rLocs.items[i].y == gridY + 1) {
+					northLoc = game.map.rLocs.items[i];
+				}
+				else if (game.map.rLocs.items[i].y == gridY - 1) {
+					southLoc = game.map.rLocs.items[i];
+				}
+			}
+			else if (game.map.rLocs.items[i].y == gridY) {
+				if (game.map.rLocs.items[i].x == gridX + 1) {
+					eastLoc = game.map.rLocs.items[i];
+				}
+				else if (game.map.rLocs.items[i].x == gridX - 1) {
+					westLoc = game.map.rLocs.items[i];
+				}
+			}
+			
+			if (game.map.rLocs.items[i].y == gridY + 1) {
+				if (game.map.rLocs.items[i].x == gridX + 1)
+					ne = true;
+				else if (game.map.rLocs.items[i].x == gridX - 1)
+					nw = true;
+			}
+			else if (game.map.rLocs.items[i].y == gridY - 1) {
+				if (game.map.rLocs.items[i].x == gridX + 1)
+					se = true;
+				else if (game.map.rLocs.items[i].x == gridX - 1)
+					sw = true;
+			}
+		}
+		boolean valid = true;
+		if (northLoc != null && eastLoc != null && ne) {
+			valid = false;
+		}
+		if (southLoc != null && eastLoc != null && se) {
+			valid = false;
+		}
+		if (northLoc != null && westLoc != null && nw) {
+			valid = false;
+		}
+		if (southLoc != null && westLoc != null && sw) {
+			valid = false;
+		}
 		
+		if (valid) {
+			RLoc newLoc = game.map.addRLoc(gridX, gridY);
+			if (northLoc != null) {
+				newLoc.addNeighbor(northLoc);
+				northLoc.addNeighbor(newLoc);
+			}
+			if (southLoc != null) {
+				newLoc.addNeighbor(southLoc);
+				southLoc.addNeighbor(newLoc);
+			}
+			if (eastLoc != null) {
+				newLoc.addNeighbor(eastLoc);
+				eastLoc.addNeighbor(newLoc);
+			}
+			if (westLoc != null) {
+				newLoc.addNeighbor(westLoc);
+				westLoc.addNeighbor(newLoc);
+			}
+			updateCameraBounds(newLoc.x * 16, newLoc.y * 16);
+		}
 	}
 	
 	public boolean checkLocValidity() {
@@ -144,17 +209,6 @@ public class RGameInput implements InputProcessor {
 			}
 		}
 		return true;
-	}
-	
-	public void shiftSegmentArray(MapSegment segment, MapPoint newPoint) {
-		if (segment.mapPoints.size > 0)
-		segment.mapPoints.add(segment.mapPoints.items[segment.mapPoints.size]);
-		if (segment.mapPoints.size > 1) {
-			for (int i = segment.mapPoints.size - 1; i > 0; i--) {
-				segment.mapPoints.items[i] = segment.mapPoints.items[i - 1];
-			}
-		}
-		segment.mapPoints.items[0] = newPoint;
 	}
 	
 	public void updateCameraBounds(int x, int y) {

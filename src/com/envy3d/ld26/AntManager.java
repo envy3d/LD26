@@ -6,23 +6,44 @@ import com.badlogic.gdx.utils.Array;
 public class AntManager {
 	
 	public GameScreen game;
-	private Array<Ant> ants;
-	public int gapFillerIndex;
+	public Array<Ant> ants;
+	//public int gapFillerIndex;
 	public Sprite antSprite;
 	public Sprite enemySprite;
 	
 	public AntManager(GameScreen game, String antSpriteName) {
 		this.game = game;
 		
-		ants = new Array<Ant>(true, 128, Ant.class);
+		ants = new Array<Ant>(false, 128, Ant.class);
 		antSprite = game.spriteHolder.grabSprite(antSpriteName);
 	}
 	
 	public void update(float deltaTime) {
-		
+		for (int i = 0; i < ants.size; i++) {
+			if (ants.items[i].moveTimer <= 0) {
+				ants.items[i].moveTimer = Ant.MOVE_TIME;
+				if (ants.items[i].carriedFood > 0) {
+					ants.items[i].carriedFood -= Ant.MOVE_TIME;
+					if (ants.items[i].carriedFood < 0)
+						ants.items[i].carriedFood = 0;
+				}
+				else {
+					ants.items[i].energy -= Ant.MOVE_TIME;
+					if (ants.items[i].energy <= 0) {
+						ants.removeIndex(i);
+					}
+				}
+				
+				
+				
+				
+				ants.items[i].firstStep = !ants.items[i].firstStep;
+			}
+			ants.items[i].moveTimer -= deltaTime;
+		}
 	}
 	
-	public void addAnt(Ant ant) {
+	/*public void addAnt(Ant ant) {
 		int prevGapFillerIndex = gapFillerIndex;
 		boolean gapFound = false;
 		if (ants.items[gapFillerIndex] == null) {
@@ -54,12 +75,12 @@ public class AntManager {
 				}
 			}
 		}
-	}
+	}*/
 	
-	public void removeAnt(Ant ant) {
+	/*public void removeAnt(Ant ant) {
 		gapFillerIndex = ants.indexOf(ant, true);
 		ants.items[gapFillerIndex] = null;
-	}
+	}*/
 	
 	public void render() {
 		for (int i = 0; i < ants.size; i++) {
