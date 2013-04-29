@@ -124,18 +124,18 @@ public class GameInput implements InputProcessor {
 	}
 	
 	public void actOnSquare() {
-		Junction northJ;
-		Junction eastJ;
-		Junction southJ;
-		Junction westJ;
-		MapSegment northS;
-		MapSegment eastS;
-		MapSegment southS;
-		MapSegment westS;
-		PlaceJunction northP;
-		PlaceJunction eastP;
-		PlaceJunction southP;
-		PlaceJunction westP;
+		Junction northJ = null;
+		Junction eastJ = null;
+		Junction southJ = null;
+		Junction westJ = null;
+		MapSegment northS = null;
+		MapSegment eastS = null;
+		MapSegment southS = null;
+		MapSegment westS = null;
+		PlaceJunction northP = null;
+		PlaceJunction eastP = null;
+		PlaceJunction southP = null;
+		PlaceJunction westP = null;
 		int numOfJ = 0;
 		int numOfS = 0;
 		int numOfP = 0;
@@ -228,6 +228,79 @@ public class GameInput implements InputProcessor {
 		if (numOfJ == 0 && numOfP == 0 && numOfS == 0) {
 			insertNeighborlessJunction();
 		}
+		else if (numOfJ == 1 && numOfP == 0 && numOfS == 0) {
+			if (northJ != null) {
+				if (northJ.numOfSegments == 1 && northJ.mapSegOut[0].junctionToward.y > northJ.y) {
+					extendJunctionChain(northJ);
+				}
+				else
+					createJunctionChain(northJ);
+			}
+			else if (eastJ != null) {
+				if (eastJ.numOfSegments == 1 && eastJ.mapSegOut[0].junctionToward.x > eastJ.x) {
+					extendJunctionChain(eastJ);
+				}
+				else
+					createJunctionChain(eastJ);
+			}
+			else if (southJ != null) {
+				if (southJ.numOfSegments == 1 && southJ.mapSegOut[0].junctionToward.y < southJ.y) {
+					extendJunctionChain(southJ);
+				}
+				else
+					createJunctionChain(southJ);
+			}
+			else if (westJ != null) {
+				if (westJ.numOfSegments == 1 && westJ.mapSegOut[0].junctionToward.x < westJ.x) {
+					extendJunctionChain(westJ);
+				}
+				else
+					createJunctionChain(westJ);
+			}
+		}
+		else if (numOfJ == 0 && numOfP == 0 && numOfS == 1) {
+			if (northS != null) {
+				for (int i = 0; i < northS.junctionToward.numOfSegments; i++) {
+					if (northS.junctionFrom == northS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(northS, northS.junctionToward.mapSegOut[i], gridX, gridY + 1);
+					}
+				}
+			}
+			else if (eastS != null) {
+				for (int i = 0; i < eastS.junctionToward.numOfSegments; i++) {
+					if (eastS.junctionFrom == eastS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(eastS, eastS.junctionToward.mapSegOut[i], gridX + 1, gridY);
+					}
+				}
+			}
+			if (southS != null) {
+				for (int i = 0; i < southS.junctionToward.numOfSegments; i++) {
+					if (southS.junctionFrom == southS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(southS, southS.junctionToward.mapSegOut[i], gridX, gridY - 1);
+					}
+				}
+			}
+			//
+			//
+			//	CHANGE THIS TO WEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//
+			//
+			else if (eastS != null) {
+				for (int i = 0; i < eastS.junctionToward.numOfSegments; i++) {
+					if (eastS.junctionFrom == eastS.junctionToward.mapSegOut[i].junctionToward) {
+						insertJunctionIntoSegment(eastS, eastS.junctionToward.mapSegOut[i], gridX + 1, gridY);
+					}
+				}
+			}
+		}
+		else if (numOfJ == 0 && numOfP == 0 && numOfS == 2) {
+			if (northS != null && southS != null) {
+				//insertJunctionIntoSegment
+			}
+			else if (eastS != null && westS != null) {
+				
+			}
+		}
 		
 	}
 	
@@ -242,6 +315,12 @@ public class GameInput implements InputProcessor {
 		junction.y = gridY;
 		junction.mapSegInc[0].mapPoints.add(tempPoint1);
 		shiftSegmentArray(junction.mapSegOut[0], tempPoint2);
+		for (int i = 0; i < junction.mapSegOut[0].junctionToward.numOfSegments; i ++) {
+			if (junction.mapSegOut[0].junctionToward.mapSegOut[i].junctionToward == junction) {
+				junction.mapSegOut[0].junctionToward.mapSegOut[i] = junction.mapSegInc[0];
+				junction.mapSegOut[0].junctionToward.mapSegInc[i] = junction.mapSegOut[0];
+			}
+		}
 	}
 	
 	public void fuseChains(Junction junctionA, Junction junctionB) {
@@ -280,10 +359,11 @@ public class GameInput implements InputProcessor {
 	
 	public void createJunctionChain(Junction baseJunction) {
 		Junction newJunction = game.map.addJunction(gridX, gridY);
-		baseJunction.addBranch(new MapSegment(baseJunction, newJunction, 0), new MapSegment(baseJunction, newJunction, 0));
+		baseJunction.addBranch(new MapSegment(baseJunction, newJunction, 0), new MapSegment(newJunction, baseJunction, 0));
+		newJunction.addBranch(new MapSegment(baseJunction, newJunction, 0), new MapSegment(newJunction, baseJunction, 0));
 	}
 	
-	public void insertJunctionInSegment(MapSegment segmentA, MapSegment segmentB, int x, int y) {
+	public void insertJunctionIntoSegment(MapSegment segmentA, MapSegment segmentB, int x, int y) {
 		int newJuncIdx = 0;
 		for (int i = 0; i < segmentA.mapPoints.size; i++) {
 			if (segmentA.mapPoints.items[i].x == x && segmentA.mapPoints.items[i].y == y) {
@@ -345,9 +425,10 @@ public class GameInput implements InputProcessor {
 	}
 	
 	public void shiftSegmentArray(MapSegment segment, MapPoint newPoint) {
-		segment.mapPoints.add(segment.mapPoints.items[segment.mapPoints.size -1]);
-		if (segment.mapPoints.size > 2) {
-			for (int i = segment.mapPoints.size - 2; i > 0; i--) {
+		if (segment.mapPoints.size > 0)
+		segment.mapPoints.add(segment.mapPoints.items[segment.mapPoints.size]);
+		if (segment.mapPoints.size > 1) {
+			for (int i = segment.mapPoints.size - 1; i > 0; i--) {
 				segment.mapPoints.items[i] = segment.mapPoints.items[i - 1];
 			}
 		}
